@@ -59,10 +59,11 @@ public class MemberListServlet extends GenericServlet implements Servlet{
 			out.println( "<body><h1>회원목록</h1>" );
 			out.println( "<p><a href='add'>신규 회원</a></p>" );
 			while( resultSet.next() ) {
-				out.println( resultSet.getInt( "MNO" ) + "," +
-			resultSet.getString( "MNAME" ) + "," + 
-			resultSet.getString( "EMAIL" ) + "," + 
-			resultSet.getDate( "CRE_DATE" ) + "<br>" );
+				out.println( resultSet.getInt( "MNO" ) + ". " 
+			+ "<a href='update?no=" + resultSet.getInt( "MNO" ) + "'>" 
+			+ resultSet.getString( "MNAME" ) + "</a>" + ", "
+			+ resultSet.getString( "EMAIL" ) + ", " 
+			+ resultSet.getDate( "CRE_DATE" ) + "<br>" );
 			}
 			out.println( "</body></html>" );
 		}catch( SQLException e ) {
