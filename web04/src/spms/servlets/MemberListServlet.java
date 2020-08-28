@@ -11,37 +11,44 @@ import java.sql.Statement;
 
 import javax.servlet.GenericServlet;
 import javax.servlet.Servlet;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 @WebServlet( "/member/list" )
-public class MemberListServlet extends GenericServlet implements Servlet{
-	private static final long serialVersionUID = 1L;
-
+@SuppressWarnings("serial")
+public class MemberListServlet extends HttpServlet{
+	
+	/*
+	   1. 사용할 JDBC 드라이버를 등록하라.
+	   2. 드라이버를 사용하여 MySQL서버와 연결하라.
+	   3. 커넥션 객체로부터 SQL를 던질 객체를 준비하라.
+	   4. SQL을 던지는 객체를 사용하여 서버에 질의하라.
+	   5. 서버에 가져온 데이터를 사용하여 HTML을 만들어서 웹 브라우저로 출력하라. 
+	*/
 	@Override
-	public void service( ServletRequest request, ServletResponse response ) throws ServletException, IOException{
-		/*
-		   1. 사용할 JDBC 드라이버를 등록하라.
-		   2. 드라이버를 사용하여 MySQL서버와 연결하라.
-		   3. 커넥션 객체로부터 SQL를 던질 객체를 준비하라.
-		   4. SQL을 던지는 객체를 사용하여 서버에 질의하라.
-		   5. 서버에 가져온 데이터를 사용하여 HTML을 만들어서 웹 브라우저로 출력하라. 
-		*/
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Connection connection = null;
 		Statement statement = null;
 		ResultSet resultSet = null;
 		try {
 			
+			ServletContext servletContext = this.getServletContext();
+			
 			// 1. 사용할 JDBC 드라이버를 등록하라.
-			DriverManager.registerDriver( new com.mysql.jdbc.Driver() );
+			Class.forName( servletContext.getInitParameter( "driver" ) );
 			
 			// 2. 드라이버를 사용하여 MySQL서버와 연결하라.
-			String timeZoneValue = "useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
 			connection = DriverManager.getConnection( 
-					"jdbc:mysql://localhost/madang?" + timeZoneValue,
-					"madang", "madang" );
+					servletContext.getInitParameter( "url" ) 
+					+ TimeZoneValue.getTimeZoneValue(),
+					servletContext.getInitParameter( "username" ),
+					servletContext.getInitParameter( "password" ) );
 			
 			// 3. 커넥션 객체로부터 SQL를 던질 객체를 준비하라.
 			statement = connection.createStatement();
@@ -58,15 +65,17 @@ public class MemberListServlet extends GenericServlet implements Servlet{
 			out.println( "<html><head><title>회원목록</title></head>" );
 			out.println( "<body><h1>회원목록</h1>" );
 			out.println( "<p><a href='add'>신규 회원</a></p>" );
+			out.println( "<p><a href='sort'>정렬</a></p>" );
 			while( resultSet.next() ) {
 				out.println( resultSet.getInt( "MNO" ) + ". " 
 			+ "<a href='update?no=" + resultSet.getInt( "MNO" ) + "'>" 
 			+ resultSet.getString( "MNAME" ) + "</a>" + ", "
 			+ resultSet.getString( "EMAIL" ) + ", " 
-			+ resultSet.getDate( "CRE_DATE" ) + "<br>" );
+			+ resultSet.getDate( "CRE_DATE" ) 
+			+ "<a href='remove?no=" + resultSet.getInt( "MNO" ) + "'>[삭제]</a><br>" );
 			}
 			out.println( "</body></html>" );
-		}catch( SQLException e ) {
+		}catch( Exception e ) {
 			throw new ServletException( e );
 		}finally {
 			try { if( resultSet != null ) resultSet.close(); } catch( Exception e ) {}
@@ -74,4 +83,5 @@ public class MemberListServlet extends GenericServlet implements Servlet{
 			try { if( connection != null ) connection.close(); } catch( Exception e ) {}
 		}
 	}
+
 }

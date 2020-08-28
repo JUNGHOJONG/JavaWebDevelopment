@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -35,17 +36,23 @@ public class MemberAddServlet extends HttpServlet {
 	@Override
 	protected void doPost( HttpServletRequest request, HttpServletResponse response )
 			throws ServletException, IOException {
-		request.setCharacterEncoding( "UTF-8" );
+//		request.setCharacterEncoding( "UTF-8" );
 		Connection connection = null; 
 		PreparedStatement statement = null;
 		try {
+			
+			ServletContext servletContext = this.getServletContext();
+			
 			// 1. JDBC 드라이버 등록
-			DriverManager.registerDriver( new com.mysql.jdbc.Driver() );
+//			DriverManager.registerDriver( new com.mysql.jdbc.Driver() );
+			Class.forName( servletContext.getInitParameter( "driver" ) );
 			
 			// 2. JDBC 드라이버와 MySQL서버 연결
-			String timeZoneValue = "useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
-			connection = DriverManager.getConnection( "jdbc:mysql://localhost/madang?" + timeZoneValue,
-					"madang", "madang" );
+			connection = DriverManager.getConnection( 
+					servletContext.getInitParameter( "url" ) 
+					+ TimeZoneValue.getTimeZoneValue(),
+					servletContext.getInitParameter( "username" ),
+					servletContext.getInitParameter( "password" ) );
 			
 			// 3. 커넥션 객체로부터 SQL을 던질 객체를 준비
  			statement = connection.prepareStatement( "Insert INTO MEMBERS( EMAIL, PWD, MNAME, CRE_DATE, MOD_DATE )"
