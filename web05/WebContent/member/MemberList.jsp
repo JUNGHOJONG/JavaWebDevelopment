@@ -21,7 +21,7 @@ for( Member n : members ){
 <a href='update?no=<%=n.getNo()%>'><%=n.getName()%></a>,
 <%=n.getEmail()%>,
 <%=n.getCreatedDate()%>
-<a href='delete?no=<%=n.getNo()%>'>[삭제]</a><br>
+<a href='remove?no=<%=n.getNo()%>'>[삭제]</a><br>
 <%}%>
 <jsp:include page="/Tail.jsp"/>
 </body>

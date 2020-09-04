@@ -25,19 +25,13 @@ public class MemberListServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		request.setCharacterEncoding( "UTF-8" );
+//		request.setCharacterEncoding( "UTF-8" );
 		Connection connection = null;
 		Statement statement = null;
 		ResultSet resultSet = null;
 		try {
 			// web.xml setting ÇÊ¿ä
-			ServletContext servletContext = this.getServletContext();
-			Class.forName( servletContext.getInitParameter( "driver" ) );
-			connection = DriverManager.getConnection( 
-					servletContext.getInitParameter( "url" ) 
-					+ TimeZoneValue.getTimeZoneValue(),
-					servletContext.getInitParameter( "username" ),
-					servletContext.getInitParameter( "password" ) );
+			connection = ( Connection ) this.getServletContext().getAttribute( "connection" );
 			statement = connection.createStatement();
 			resultSet = statement.executeQuery( 
 					"SELECT MNO, MNAME, EMAIL, CRE_DATE FROM MEMBERS" );
@@ -56,7 +50,6 @@ public class MemberListServlet extends HttpServlet {
 					"/member/MemberList.jsp" );
 			requestDispatcher.include( request, response );
 		} catch ( Exception e ) {
-//			throw new ServletException( e );
 			request.setAttribute( "error", e );
 			RequestDispatcher requestDispatcher = request.getRequestDispatcher(
 					"/Error.jsp" );
@@ -64,7 +57,6 @@ public class MemberListServlet extends HttpServlet {
 		} finally {
 			try { if( resultSet != null ) { resultSet.close(); } } catch( Exception e ) {}
 			try { if( statement != null ) { statement.close(); } } catch( Exception e ) {}
-			try { if( connection != null ) { connection.close(); } } catch( Exception e ) {}
 		}	
 	}
 
