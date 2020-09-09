@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import spms.dao.MemberDao;
 import spms.vo.Member;
 
 import javax.servlet.RequestDispatcher;
@@ -25,38 +26,23 @@ public class MemberListServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-//		request.setCharacterEncoding( "UTF-8" );
-		Connection connection = null;
-		Statement statement = null;
-		ResultSet resultSet = null;
 		try {
-			// web.xml setting ÇÊ¿ä
-			connection = ( Connection ) this.getServletContext().getAttribute( "connection" );
-			statement = connection.createStatement();
-			resultSet = statement.executeQuery( 
-					"SELECT MNO, MNAME, EMAIL, CRE_DATE FROM MEMBERS" );
+			ServletContext sc = this.getServletContext();
+			Connection connection = ( Connection ) sc.getAttribute( "connection" );
+			MemberDao memberDao = new MemberDao();
+			memberDao.setConnection( connection );
 			
-			response.setContentType( "text/html; charSet=UTF-8" );
-			ArrayList<Member> members = new ArrayList<>();
-			while( resultSet.next() ) {
-				members.add( new Member()
-						.setNo( resultSet.getInt( "MNO" ) )
-						.setName( resultSet.getString( "MNAME" ) )
-						.setEmail( resultSet.getString( "EMAIL" ) )
-						.setCreatedDate( resultSet.getDate( "CRE_DATE" ) ) );
-			}
-			request.setAttribute( "members", members );
+			request.setAttribute( "members", memberDao.selectList() );
+			response.setContentType( "text/html; charset=UTF-8" );
 			RequestDispatcher requestDispatcher = request.getRequestDispatcher(
 					"/member/MemberList.jsp" );
 			requestDispatcher.include( request, response );
 		} catch ( Exception e ) {
+			e.printStackTrace();
 			request.setAttribute( "error", e );
 			RequestDispatcher requestDispatcher = request.getRequestDispatcher(
 					"/Error.jsp" );
 			requestDispatcher.forward( request, response );
-		} finally {
-			try { if( resultSet != null ) { resultSet.close(); } } catch( Exception e ) {}
-			try { if( statement != null ) { statement.close(); } } catch( Exception e ) {}
 		}	
 	}
 
