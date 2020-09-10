@@ -3,6 +3,7 @@ package spms.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,8 +15,8 @@ public class MemberDao {
 	public void setConnection( Connection connection ) {
 		this.connection = connection;
 	}
-	// 데이터를 처리하는 함수
-	// 객체를 반환하는 함수
+	
+	// 객체를 반환하는 함수, 데이터를 처리하는 함수
 	public List<Member> selectList() throws Exception{
 		Statement statement = null;
 		ResultSet resultSet = null;
@@ -59,8 +60,18 @@ public class MemberDao {
 	}
 	
 	// 회원 삭제
-	public int delete( int no ) {
-		return 0;
+	public int delete( int no ) throws Exception{
+		PreparedStatement preparedStatement = null;
+		try {
+			preparedStatement = connection.prepareStatement(
+					"DELETE FROM MEMBERS WHERE MNO = " + no );
+			return preparedStatement.executeUpdate();
+		} catch (SQLException e) {
+			throw e;		
+		} finally {
+			try { if( preparedStatement != null ) preparedStatement.close(); }
+			catch( Exception e ) {}
+		}
 	}
 	
 	// 회원 상세 정보 조회
@@ -106,8 +117,51 @@ public class MemberDao {
 	}
 	
 	// Member 객체 있응면 리턴 없으면 null리턴
-	public Member exist( String email, String password ) {
-		return null;
+	public Member exist( String email, String password ) throws Exception{
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		try {
+			preparedStatement = connection.prepareStatement( 
+					"SELECT EMAIL, PWD FROM MEMBERS WHERE EMAIL=? AND PWD=?" );
+			preparedStatement.setString( 1, email );
+			preparedStatement.setString( 2, password );
+			resultSet = preparedStatement.executeQuery();
+			if( resultSet.next() ) {
+				Member member = new Member();
+				member.setEmail( email ).setPassword( password );
+				return member;
+			}else {
+				System.out.println( "해당 되는 정보가 없습니다." );
+				return null;	
+			}
+		} catch ( Exception e) {
+			throw e;
+		} finally {
+			try { if( resultSet != null ) resultSet.close(); } catch( Exception e ) {}
+			try { if( preparedStatement != null ) preparedStatement.close(); }
+			catch( Exception e ) {}
+		}
+	}
+	
+	public void sort() throws Exception{
+		String[] query = {
+				"ALTER TABLE MEMBERS AUTO_INCREMENT=1",
+				"SET @COUNT = 0",
+				"UPDATE MEMBERS SET MNO = @COUNT:=@COUNT+1"
+		};
+		PreparedStatement preparedStatement = null;
+		try {
+			for( String s : query ) {
+				preparedStatement = connection.prepareStatement( s );
+				preparedStatement.executeUpdate();
+				preparedStatement.clearParameters();
+			}
+		} catch ( Exception e ) {
+			throw e;
+		} finally {
+			try { if( preparedStatement != null ) preparedStatement.close(); }
+			catch( Exception e ) {}
+		}
 	}
 
 }

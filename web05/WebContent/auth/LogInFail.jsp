@@ -1,14 +1,14 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html"; charset="UTF-8">
 <meta http-equiv="Refresh" content="1;url=login">
-<title>ทฮฑืภฮ ฝวฦะ</title>
+<title>๋ก๊ทธ์ธ ์คํจ</title>
 </head>
 <body>
-<h1>ทฮฑืภฮ ฝวฦะ</h1>
-<p>ดูฝร ฟไรป บฮลนตๅธณดฯดู.</p>
+<h1>๋ก๊ทธ์ธ ์คํจ</h1>
+<p>๋ค์ ์”์ฒญ ๋ถ€ํ๋“๋ฆฝ๋๋ค.</p>
 </body>
 </html>

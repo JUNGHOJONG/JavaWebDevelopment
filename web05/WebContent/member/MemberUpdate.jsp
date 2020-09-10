@@ -1,25 +1,25 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%@ page import="spms.vo.Member"%>
 <%Member member = ( Member ) request.getAttribute( "member" );%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>È¸¿øÁ¤º¸</title>
+<title>íšŒì›ì •ë³´</title>
 </head>
 <body>
-<h1>È¸¿øÁ¤º¸</h1>
+<h1>íšŒì›ì •ë³´</h1>
 <form action='update' method='post'>
-¹øÈ£: <input type='text' name='no' value='<%=request.getParameter( "no" )%>' readonly><br>
-ÀÌ¸§: <input type='text' name='name' value='<%=member.getName()%>'><br>
-ÀÌ¸ÞÀÏ: <input type='text' name='email' value='<%=member.getEmail()%>'><br>
-°¡ÀÔÀÏ: <%=member.getCreatedDate()%><br>
-<input type='submit' value='ÀúÀå'>
-<input type='button' value='»èÁ¦'
-onclick='location.href=remove?no=<%=request.getParameter( "no" )%>'>
-<input type='button' value='Ãë¼Ò'
-onclick='location.href=list'>
+ë²ˆí˜¸: <input type='text' name='no' value='<%=request.getParameter( "no" )%>' readonly><br>
+ì´ë¦„: <input type='text' name='name' value='<%=member.getName()%>'><br>
+ì´ë©”ì¼: <input type='text' name='email' value='<%=member.getEmail()%>'><br>
+ê°€ìž…ì¼: <%=member.getCreatedDate()%><br>
+<input type='submit' value='ì €ìž¥'>
+<input type='button' value='ì‚­ì œ'
+onclick='location.href="remove?no=<%=request.getParameter( "no" )%>";'>
+<input type='button' value='ì·¨ì†Œ'
+onclick='location.href="list"'>
 </form>
 </body>
 </html>

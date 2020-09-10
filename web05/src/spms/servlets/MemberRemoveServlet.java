@@ -12,26 +12,27 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import spms.dao.MemberDao;
+
 @WebServlet( "/member/remove" )
 @SuppressWarnings("serial")
 public class MemberRemoveServlet extends HttpServlet{
 
 	@Override
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Connection connection = null;
-		PreparedStatement preparedStatement = null;
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
+			throws ServletException, IOException {
 		try {
-			connection = ( Connection ) this.getServletContext().getAttribute( "connection" );
-			preparedStatement = connection.prepareStatement(
-					"DELETE FROM MEMBERS WHERE MNO = " + request.getParameter( "no" ) );
-			preparedStatement.executeUpdate();
+			ServletContext sc = this.getServletContext();
+			Connection connection = ( Connection ) sc.getAttribute( "connection" );
+			
+			MemberDao memberDao = new MemberDao();
+			memberDao.setConnection( connection );
+			memberDao.delete( Integer.parseInt( request.getParameter( "no" ) ) );
 			
 			response.sendRedirect( "list" );
 			
 		} catch ( Exception e) {
 			throw new ServletException( e );
-		} finally {
-			try { if( preparedStatement != null ) preparedStatement.close(); } catch( Exception e ) {}
 		}
 	}
 

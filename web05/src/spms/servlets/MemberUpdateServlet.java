@@ -3,7 +3,6 @@ package spms.servlets;
 import java.io.IOException;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
@@ -34,7 +33,7 @@ public class MemberUpdateServlet extends HttpServlet {
 			// view
 			response.setContentType( "text/html; charset=utf-8" );
 			RequestDispatcher requestDispatcher = request.getRequestDispatcher( 
-					"/member/MemberUpdate" );
+					"/member/MemberUpdate.jsp" );
 			request.setAttribute( "member", member );
 			requestDispatcher.include( request, response );
 
@@ -50,21 +49,11 @@ public class MemberUpdateServlet extends HttpServlet {
 	}
 
 	@Override
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//		request.setCharacterEncoding( "UTF-8" );
-//		Connection connection = null;
-//		PreparedStatement preparedStatement = null;
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		try { 
 			ServletContext sc = this.getServletContext();
 			Connection connection = ( Connection ) sc.getAttribute( "connection" );
-//			connection = ( Connection ) this.getServletContext().getAttribute( "connection" );			
-//			preparedStatement = connection.prepareStatement( 
-//					"UPDATE MEMBERS SET MNAME = ?, EMAIL = ?, MOD_DATE = NOW()"
-//					+ "WHERE MNO = ?" );
-//			preparedStatement.setString( 1, request.getParameter( "name" ) );
-//			preparedStatement.setString( 2, request.getParameter( "email" ) );
-//			preparedStatement.setString( 3, request.getParameter( "no" ) );
-//			preparedStatement.executeUpdate();
 			MemberDao memberDao = new MemberDao();
 			memberDao.setConnection( connection );
 			Member member = new Member();
@@ -76,12 +65,13 @@ public class MemberUpdateServlet extends HttpServlet {
 			response.sendRedirect( "list" );
 		
 		}catch( Exception e ) {
-			throw new ServletException( e );
-		}finally {
-//			try { if( preparedStatement != null ) preparedStatement.close(); } catch( Exception e ) {}
-//			try { if( connection != null ) connection.close(); } catch( Exception e ) {}
+//			throw new ServletException( e );
+			e.printStackTrace();
+			RequestDispatcher ruquestDispatcher = request.getRequestDispatcher(
+					"/Error.jsp" );
+			request.setAttribute( "error", e );
+			ruquestDispatcher.forward( request, response );
 		}
-		
 	}
 	
 }

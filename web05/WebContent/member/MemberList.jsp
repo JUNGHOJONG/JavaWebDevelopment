@@ -12,6 +12,7 @@
 <jsp:include page="/Header.jsp"/>
 <h1>회원 목록</h1>
 <p><a href='add'>신규 회원</a></p>
+<p><a href='sort'>회원 정렬</a></p>
 <%
 ArrayList<Member> members = ( ArrayList<Member> ) request.
 getAttribute( "members" );
