@@ -13,7 +13,9 @@
 이메일: <input type='text' name='email'><br>
 암호: <input type='password' name='password'><br>
 <input type='submit' value='추가'>
-<input type='reset' value='취소'>
+<!-- <input type='reset' value='취소'> -->
+<input type='button' value='취소'
+onclick='location.href="list"'>
 </form>
 </body>
 </html>

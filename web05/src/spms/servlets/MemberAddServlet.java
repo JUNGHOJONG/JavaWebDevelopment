@@ -33,10 +33,9 @@ public class MemberAddServlet extends HttpServlet {
 	protected void doPost( HttpServletRequest request, HttpServletResponse response )
 			throws ServletException, IOException {
 		try {
-			Connection connection = ( Connection ) this.getServletContext().getAttribute( "connection" );
-			MemberDao memberDao = new MemberDao();	
-			memberDao.setConnection( connection );
-			
+			ServletContext sc = this.getServletContext();
+			MemberDao memberDao = ( MemberDao ) sc.getAttribute( "memberDao" );	
+
 			Member member = new Member();
 			member.setName( request.getParameter( "name" ) )
 			.setEmail( request.getParameter( "email" ) )

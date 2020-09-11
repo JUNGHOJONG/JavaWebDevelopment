@@ -23,10 +23,8 @@ public class MemberSortServlet extends HttpServlet{
 			throws ServletException, IOException {
 		try {
 			ServletContext sc = this.getServletContext();
-			Connection connection = ( Connection ) sc.getAttribute( "connection" );
-			
-			MemberDao memberDao = new MemberDao();
-			memberDao.setConnection( connection );
+			MemberDao memberDao = ( MemberDao ) sc.getAttribute( "memberDao" );
+
 			memberDao.sort();
 			
 			response.sendRedirect( "list" );

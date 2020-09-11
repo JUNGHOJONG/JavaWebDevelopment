@@ -33,11 +33,8 @@ public class LogInServlet extends HttpServlet {
 			throws ServletException, IOException {
 		try {
 			ServletContext sc = this.getServletContext();
-			Connection connection = ( Connection ) sc.getAttribute( "connection" );
-			
-			MemberDao memberDao = new MemberDao();
-			memberDao.setConnection( connection );
-			
+			MemberDao memberDao = ( MemberDao ) sc.getAttribute( "memberDao" );
+
 			Member member = memberDao.exist( request.getParameter( "email" ),
 					request.getParameter( "password" ) );
 			if( member != null ) {

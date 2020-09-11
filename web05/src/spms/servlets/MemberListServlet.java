@@ -28,10 +28,8 @@ public class MemberListServlet extends HttpServlet {
 			throws ServletException, IOException {
 		try {
 			ServletContext sc = this.getServletContext();
-			Connection connection = ( Connection ) sc.getAttribute( "connection" );
-			MemberDao memberDao = new MemberDao();
-			memberDao.setConnection( connection );
-			
+			MemberDao memberDao = ( MemberDao ) sc.getAttribute( "memberDao" );
+
 			request.setAttribute( "members", memberDao.selectList() );
 			response.setContentType( "text/html; charset=UTF-8" );
 			RequestDispatcher requestDispatcher = request.getRequestDispatcher(
