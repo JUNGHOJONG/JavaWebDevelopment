@@ -1,21 +1,22 @@
 package spms.dao;
 
 import java.sql.Connection;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import spms.util.DBConnectionPool;
+import org.apache.commons.dbcp2.BasicDataSource;
+
 import spms.vo.Member;
 
 public class MemberDao {
 	
-	DBConnectionPool connPool;
-	public void setDbConnectionPool(DBConnectionPool connPool) {
-		this.connPool = connPool;
+	BasicDataSource ds;
+	public void setDataSource(BasicDataSource ds) {
+		this.ds = ds;
 	}
 	
 	// 객체를 반환하는 함수, 데이터를 처리하는 함수
@@ -24,7 +25,7 @@ public class MemberDao {
 		Statement statement = null;
 		ResultSet resultSet = null;
 		try {
-			connection = connPool.getConnection();
+			connection = ds.getConnection();
 			statement = connection.createStatement();
 			resultSet = statement.executeQuery( 
 					"SELECT MNO, MNAME, EMAIL, CRE_DATE FROM MEMBERS "
@@ -42,7 +43,7 @@ public class MemberDao {
 		} finally {
 			try{ if( resultSet != null ) resultSet.close(); } catch( Exception e ) {}
 			try{ if( statement != null ) statement.close(); } catch( Exception e ) {}
-			if(connection != null) connPool.returnConnection(connection);
+			try{ if(connection != null) connection.close(); } catch(Exception e) {}
 		}
 	}
 	
@@ -51,7 +52,7 @@ public class MemberDao {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		try {
-			connection = connPool.getConnection();
+			connection = ds.getConnection();
 			preparedStatement = connection.prepareStatement(
 					"Insert INTO MEMBERS( EMAIL, PWD, MNAME, CRE_DATE, MOD_DATE )"
 						+ " VALUES( ?, ?, ?, NOW(), NOW() )" );
@@ -63,7 +64,7 @@ public class MemberDao {
 			throw e;
 		} finally {
 			try { if( preparedStatement != null ) preparedStatement.close(); } catch( Exception e ) {}
-			if(connection != null) connPool.returnConnection(connection);
+			try{ if(connection != null) connection.close(); } catch(Exception e) {}
 		}
 	}
 	
@@ -72,7 +73,7 @@ public class MemberDao {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		try {
-			connection = connPool.getConnection();
+			connection = ds.getConnection();
 			preparedStatement = connection.prepareStatement(
 					"DELETE FROM MEMBERS WHERE MNO = " + no );
 			return preparedStatement.executeUpdate();
@@ -81,7 +82,7 @@ public class MemberDao {
 		} finally {
 			try { if( preparedStatement != null ) preparedStatement.close(); }
 			catch( Exception e ) {}
-			if(connection != null) connPool.returnConnection(connection);
+			try{ if(connection != null) connection.close(); } catch(Exception e) {}
 		}
 	}
 	
@@ -91,7 +92,7 @@ public class MemberDao {
 		Statement statement = null;
 		ResultSet resultSet = null;
 		try {
-			connection = connPool.getConnection();
+			connection = ds.getConnection();
 			statement = connection.createStatement();
 			resultSet = statement.executeQuery(
 					"SELECT MNO, EMAIL, MNAME, CRE_DATE FROM MEMBERS"
@@ -107,7 +108,7 @@ public class MemberDao {
 		} finally {
 			try { if( resultSet != null ) resultSet.close(); } catch( Exception e ) {}
 			try { if( statement != null ) statement.close(); } catch( Exception e ) {}
-			if(connection != null) connPool.returnConnection(connection);
+			try{ if(connection != null) connection.close(); } catch(Exception e) {}
 		}
 	}
 	
@@ -116,7 +117,7 @@ public class MemberDao {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		try {
-			connection = connPool.getConnection();
+			connection = ds.getConnection();
 			preparedStatement = connection.prepareStatement( 
 					"UPDATE MEMBERS SET MNAME = ?, EMAIL = ?, MOD_DATE = NOW()"
 					+ "WHERE MNO = ?" );
@@ -129,7 +130,7 @@ public class MemberDao {
 		} finally {
 			try { if( preparedStatement != null ) preparedStatement.close(); } 
 			catch( Exception e ) {}
-			if(connection != null) connPool.returnConnection(connection);
+			try{ if(connection != null) connection.close(); } catch(Exception e) {}
 		}
 	}
 	
@@ -139,7 +140,7 @@ public class MemberDao {
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 		try {
-			connection = connPool.getConnection();
+			connection = ds.getConnection();
 			preparedStatement = connection.prepareStatement( 
 					"SELECT EMAIL, PWD FROM MEMBERS WHERE EMAIL=? AND PWD=?" );
 			preparedStatement.setString( 1, email );
@@ -159,7 +160,7 @@ public class MemberDao {
 			try { if( resultSet != null ) resultSet.close(); } catch( Exception e ) {}
 			try { if( preparedStatement != null ) preparedStatement.close(); }
 			catch( Exception e ) {}
-			if(connection != null) connPool.returnConnection(connection);
+			try{ if(connection != null) connection.close(); } catch(Exception e) {}
 		}
 	}
 	
@@ -172,7 +173,7 @@ public class MemberDao {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		try {
-			connection = connPool.getConnection();
+			connection = ds.getConnection();
 			for( String s : query ) {
 				preparedStatement = connection.prepareStatement( s );
 				preparedStatement.executeUpdate();
@@ -183,7 +184,7 @@ public class MemberDao {
 		} finally {
 			try { if( preparedStatement != null ) preparedStatement.close(); }
 			catch( Exception e ) {}
-			if(connection != null) connPool.returnConnection(connection);
+			try{ if(connection != null) connection.close(); } catch(Exception e) {}
 		}
 	}
 
