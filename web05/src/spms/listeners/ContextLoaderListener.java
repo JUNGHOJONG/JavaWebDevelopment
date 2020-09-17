@@ -1,30 +1,25 @@
 package spms.listeners;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
 import spms.dao.MemberDao;
 import spms.servlets.TimeZoneValue;
+import spms.util.DBConnectionPool;
 
 public class ContextLoaderListener implements ServletContextListener {
-	Connection connection = null;
+	DBConnectionPool connPool;
 	@Override
 	public void contextInitialized( ServletContextEvent event ) {
 		try {
 			ServletContext sc = event.getServletContext();
-			Class.forName( sc.getInitParameter( "driver" ) );
-			connection = DriverManager.getConnection(
-					sc.getInitParameter( "url" )
-					+ TimeZoneValue.getTimeZoneValue(),
+			connPool = new DBConnectionPool(sc.getInitParameter( "driver" ),
+					sc.getInitParameter( "url" ) + TimeZoneValue.getTimeZoneValue(),
 					sc.getInitParameter( "username" ),
-					sc.getInitParameter( "password" ) 
-			);
+					sc.getInitParameter( "password" ));
 			MemberDao memberDao = new MemberDao();
-			memberDao.setConnection( connection );
+			memberDao.setDbConnectionPool(connPool);
 			
 			sc.setAttribute( "memberDao", memberDao );
 			
@@ -35,7 +30,7 @@ public class ContextLoaderListener implements ServletContextListener {
 	
 	@Override
 	public void contextDestroyed( ServletContextEvent event ) {
-		try { if( connection != null ) connection.close(); } catch( Exception e ) {}
+		connPool.closeAll();
 	}
 
 }
