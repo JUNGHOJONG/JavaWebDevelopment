@@ -19,10 +19,4 @@ public class LogOutServlet extends HttpServlet {
 		response.sendRedirect( "../auth/login" );
 	}
 
-	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		super.doPost(req, resp);
-	}
-
 }

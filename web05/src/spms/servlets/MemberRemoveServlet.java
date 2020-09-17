@@ -1,9 +1,6 @@
 package spms.servlets;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -24,7 +21,6 @@ public class MemberRemoveServlet extends HttpServlet{
 		try {
 			ServletContext sc = this.getServletContext();
 			MemberDao memberDao = ( MemberDao ) sc.getAttribute( "memberDao" );
-
 			memberDao.delete( Integer.parseInt( request.getParameter( "no" ) ) );
 			
 			response.sendRedirect( "list" );
@@ -32,11 +28,6 @@ public class MemberRemoveServlet extends HttpServlet{
 		} catch ( Exception e) {
 			throw new ServletException( e );
 		}
-	}
-
-	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		
 	}
 
 }

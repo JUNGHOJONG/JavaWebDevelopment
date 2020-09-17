@@ -1,9 +1,6 @@
 package spms.servlets;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
@@ -34,7 +31,6 @@ public class LogInServlet extends HttpServlet {
 		try {
 			ServletContext sc = this.getServletContext();
 			MemberDao memberDao = ( MemberDao ) sc.getAttribute( "memberDao" );
-
 			Member member = memberDao.exist( request.getParameter( "email" ),
 					request.getParameter( "password" ) );
 			if( member != null ) {
@@ -47,7 +43,6 @@ public class LogInServlet extends HttpServlet {
 				rd.forward( request, response );				
 			}
 		} catch ( Exception e ) {
-//			throw new ServletException( e );
 			e.printStackTrace();
 			request.setAttribute( "error", e );
 			RequestDispatcher rd = request.getRequestDispatcher( "Error.jsp" );

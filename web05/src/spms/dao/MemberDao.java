@@ -8,14 +8,14 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.dbcp2.BasicDataSource;
+import javax.sql.DataSource;
 
 import spms.vo.Member;
 
 public class MemberDao {
 	
-	BasicDataSource ds;
-	public void setDataSource(BasicDataSource ds) {
+	DataSource ds;
+	public void setDataSource(DataSource ds) {
 		this.ds = ds;
 	}
 	
@@ -63,7 +63,8 @@ public class MemberDao {
 		} catch ( Exception e) {
 			throw e;
 		} finally {
-			try { if( preparedStatement != null ) preparedStatement.close(); } catch( Exception e ) {}
+			try { if( preparedStatement != null ) preparedStatement.close(); } 
+			catch( Exception e ) {}
 			try{ if(connection != null) connection.close(); } catch(Exception e) {}
 		}
 	}

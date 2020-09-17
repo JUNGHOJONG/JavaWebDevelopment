@@ -2,8 +2,6 @@ package spms.servlets;
 
 import java.io.IOException;
 
-import java.sql.Connection;
-
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -24,11 +22,9 @@ public class MemberUpdateServlet extends HttpServlet {
 		try {
 			ServletContext sc = this.getServletContext();
 			MemberDao memberDao = ( MemberDao ) sc.getAttribute( "memberDao" );
-			
 			Member member = memberDao.selectOne( 
 					Integer.parseInt( request.getParameter( "no" ) ) );
 			
-			// view
 			response.setContentType( "text/html; charset=utf-8" );
 			RequestDispatcher requestDispatcher = request.getRequestDispatcher( 
 					"/member/MemberUpdate.jsp" );
@@ -36,7 +32,6 @@ public class MemberUpdateServlet extends HttpServlet {
 			requestDispatcher.include( request, response );
 
 		} catch ( Exception e ) {
-//			throw new ServletException( e );
 			e.printStackTrace();
 			RequestDispatcher requestDispatcher = request.getRequestDispatcher(
 					"/Error.jsp" );
@@ -62,7 +57,6 @@ public class MemberUpdateServlet extends HttpServlet {
 			response.sendRedirect( "list" );
 		
 		}catch( Exception e ) {
-//			throw new ServletException( e );
 			e.printStackTrace();
 			RequestDispatcher ruquestDispatcher = request.getRequestDispatcher(
 					"/Error.jsp" );
