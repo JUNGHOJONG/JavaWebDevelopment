@@ -16,7 +16,7 @@ public class LogOutServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		request.getSession().invalidate();
-		response.sendRedirect( "../auth/login" );
+		request.setAttribute("viewUrl", "./login.do");
 	}
 
 }

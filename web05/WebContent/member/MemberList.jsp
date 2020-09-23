@@ -11,18 +11,18 @@
 <body>
 <jsp:include page="/Header.jsp"/>
 <h1>회원 목록</h1>
-<p><a href='add'>신규 회원</a></p>
-<p><a href='sort'>회원 정렬</a></p>
+<p><a href='add.do'>신규 회원</a></p>
+<p><a href='sort.do'>회원 정렬</a></p>
 <%
 ArrayList<Member> members = ( ArrayList<Member> ) request.
 getAttribute( "members" );
 for( Member n : members ){
 %>
 <%=n.getNo()%>.
-<a href='update?no=<%=n.getNo()%>'><%=n.getName()%></a>,
+<a href='update.do?no=<%=n.getNo()%>'><%=n.getName()%></a>,
 <%=n.getEmail()%>,
 <%=n.getCreatedDate()%>
-<a href='remove?no=<%=n.getNo()%>'>[삭제]</a><br>
+<a href='remove.do?no=<%=n.getNo()%>'>[삭제]</a><br>
 <%}%>
 <jsp:include page="/Tail.jsp"/>
 </body>

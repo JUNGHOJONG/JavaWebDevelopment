@@ -22,9 +22,7 @@ public class MemberRemoveServlet extends HttpServlet{
 			ServletContext sc = this.getServletContext();
 			MemberDao memberDao = ( MemberDao ) sc.getAttribute( "memberDao" );
 			memberDao.delete( Integer.parseInt( request.getParameter( "no" ) ) );
-			
-			response.sendRedirect( "list" );
-			
+			request.setAttribute("viewUrl", "redirect:./list.do");
 		} catch ( Exception e) {
 			throw new ServletException( e );
 		}

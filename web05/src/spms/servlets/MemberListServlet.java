@@ -4,7 +4,6 @@ import java.io.IOException;
 
 import spms.dao.MemberDao;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -22,18 +21,10 @@ public class MemberListServlet extends HttpServlet {
 		try {
 			ServletContext sc = this.getServletContext();
 			MemberDao memberDao = ( MemberDao ) sc.getAttribute( "memberDao" );
-
 			request.setAttribute( "members", memberDao.selectList() );
-			response.setContentType( "text/html; charset=UTF-8" );
-			RequestDispatcher requestDispatcher = request.getRequestDispatcher(
-					"/member/MemberList.jsp" );
-			requestDispatcher.include( request, response );
+			request.setAttribute("viewUrl", "/member/MemberList.jsp");
 		} catch ( Exception e ) {
-			e.printStackTrace();
-			request.setAttribute( "error", e );
-			RequestDispatcher requestDispatcher = request.getRequestDispatcher(
-					"/Error.jsp" );
-			requestDispatcher.forward( request, response );
+			throw new ServletException(e);
 		}	
 	}
 

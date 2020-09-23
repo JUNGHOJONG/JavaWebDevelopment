@@ -2,7 +2,6 @@ package spms.servlets;
 
 import java.io.IOException;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -24,44 +23,23 @@ public class MemberUpdateServlet extends HttpServlet {
 			MemberDao memberDao = ( MemberDao ) sc.getAttribute( "memberDao" );
 			Member member = memberDao.selectOne( 
 					Integer.parseInt( request.getParameter( "no" ) ) );
-			
-			response.setContentType( "text/html; charset=utf-8" );
-			RequestDispatcher requestDispatcher = request.getRequestDispatcher( 
-					"/member/MemberUpdate.jsp" );
-			request.setAttribute( "member", member );
-			requestDispatcher.include( request, response );
-
+			request.setAttribute("member", member);
+			request.setAttribute("viewUrl", "/member/MemberUpdate.jsp");
 		} catch ( Exception e ) {
-			e.printStackTrace();
-			RequestDispatcher requestDispatcher = request.getRequestDispatcher(
-					"/Error.jsp" );
-			request.setAttribute( "error", e );
-			requestDispatcher.forward( request, response );
+			throw new ServletException(e);
 		}
-
 	}
 
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		try { 
+		try {
 			ServletContext sc = this.getServletContext();
 			MemberDao memberDao = ( MemberDao ) sc.getAttribute( "memberDao" );
-
-			Member member = new Member();
-			member.setName( request.getParameter( "name" ) )
-			.setEmail( request.getParameter( "email" ) )
-			.setNo( Integer.parseInt( request.getParameter( "no" ) ) );
-			memberDao.update( member );
-			
-			response.sendRedirect( "list" );
-		
+			memberDao.update((Member) request.getAttribute("member"));
+			request.setAttribute("viewUrl", "redirect:./list.do");
 		}catch( Exception e ) {
-			e.printStackTrace();
-			RequestDispatcher ruquestDispatcher = request.getRequestDispatcher(
-					"/Error.jsp" );
-			request.setAttribute( "error", e );
-			ruquestDispatcher.forward( request, response );
+			throw new ServletException(e);
 		}
 	}
 	

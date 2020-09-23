@@ -6,6 +6,6 @@
 Davinci.J's web project
 <span style="float:right;">
 <%=m.getEmail()%>
-<a style="color:white;" href="<%=request.getContextPath()%>/auth/logout">로그 아웃</a>
+<a style="color:white;" href="<%=request.getContextPath()%>/auth/logout.do">로그 아웃</a>
 </span>
 </div>

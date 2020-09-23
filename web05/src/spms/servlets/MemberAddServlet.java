@@ -2,7 +2,6 @@ package spms.servlets;
 
 import java.io.IOException;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -19,10 +18,7 @@ public class MemberAddServlet extends HttpServlet {
 	@Override
 	protected void doGet( HttpServletRequest request, HttpServletResponse response )
 			throws ServletException, IOException {
-		response.setContentType( "text/html; charset=UTF-8" );
-		RequestDispatcher requestDispatcher = request.getRequestDispatcher(
-				"/member/MemberAdd.jsp" );
-		requestDispatcher.include( request, response );
+		request.setAttribute("viewUrl", "/member/MemberAdd.jsp");
 	}
 	
 	@Override
@@ -31,21 +27,10 @@ public class MemberAddServlet extends HttpServlet {
 		try {
 			ServletContext sc = this.getServletContext();
 			MemberDao memberDao = ( MemberDao ) sc.getAttribute( "memberDao" );	
-
-			Member member = new Member();
-			member.setName( request.getParameter( "name" ) )
-			.setEmail( request.getParameter( "email" ) )
-			.setPassword( request.getParameter( "password" ) );
-			memberDao.insert( member );
- 		
- 			response.sendRedirect( "list" ); // redirect
-
+			memberDao.insert((Member) request.getAttribute("member"));
+			request.setAttribute("viewUrl", "redirect:./list.do");
 		} catch ( Exception e ) {
-			e.printStackTrace();
-			request.setAttribute( "error", e );
-			RequestDispatcher requestDispatcher = request.getRequestDispatcher(
-					"/Error.jsp" );
-			requestDispatcher.forward( request, response );
+			throw new ServletException(e);
 		}
 	}
 	

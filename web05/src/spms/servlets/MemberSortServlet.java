@@ -2,7 +2,6 @@ package spms.servlets;
 
 import java.io.IOException;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -22,14 +21,9 @@ public class MemberSortServlet extends HttpServlet{
 			ServletContext sc = this.getServletContext();
 			MemberDao memberDao = ( MemberDao ) sc.getAttribute( "memberDao" );
 			memberDao.sort();
-			
-			response.sendRedirect( "list" );
-			
+			request.setAttribute("viewUrl", "redirect:./list.do");
 		} catch ( Exception e) {
-			e.printStackTrace();
-			request.setAttribute( "error", e );
-			RequestDispatcher rd = request.getRequestDispatcher( "Error.jsp" );
-			rd.forward( request, response );
+			throw new ServletException(e);
 		}
 		
 	}
