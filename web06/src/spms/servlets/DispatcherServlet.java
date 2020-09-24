@@ -1,6 +1,7 @@
 package spms.servlets;
 
 import java.io.IOException;
+
 import java.util.HashMap;
 
 import javax.servlet.RequestDispatcher;
@@ -10,18 +11,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
+import spms.bind.DataBinding;
+import spms.bind.ServletDataDataBinder;
 import spms.controls.Controller;
-import spms.controls.MemberAddController;
-import spms.controls.MemberListController;
-import spms.controls.MemberLogInController;
-import spms.controls.MemberLogOutController;
-import spms.controls.MemberRemoveController;
-import spms.controls.MemberSortController;
-import spms.controls.MemberUpdateController;
-import spms.dao.MemberDao;
-import spms.vo.Member;
 
 @WebServlet("*.do")
 @SuppressWarnings("serial")
@@ -37,30 +30,9 @@ public class DispatcherServlet extends HttpServlet {
 			ServletContext sc = this.getServletContext();
 			model.put("session", request.getSession());
 			Controller pageController = (Controller) sc.getAttribute(servletPath);
-			if("/member/add.do".equals(servletPath)) {
-				if(request.getParameter("name") != null) {
-					model.put("member", new Member().
-							setName(request.getParameter("name")).
-							setEmail(request.getParameter("email")).
-							setPassword(request.getParameter("password")));	
-				}
-			}else if("/member/update.do".equals(servletPath)) {
-				if(request.getParameter("name") != null) {
-					model.put("member", new Member().
-							setName(request.getParameter("name"))
-							.setEmail(request.getParameter("email"))
-							.setNo(Integer.parseInt(request.getParameter("no"))));
-				}else {
-					model.put("no", Integer.parseInt(request.getParameter("no")));
-				}
-			}else if("/member/remove.do".equals(servletPath)) {
-				model.put("no", Integer.parseInt(request.getParameter("no")));
-			}else if("/auth/login.do".equals(servletPath)) {
-				if(request.getParameter("email") != null) {
-					model.put("member", new Member()
-							.setEmail(request.getParameter("email"))
-							.setPassword(request.getParameter("password")));
-				}
+			
+			if(pageController instanceof DataBinding) {
+				prepareRequestData(request, model, (DataBinding) pageController);
 			}
 			String viewUrl = pageController.execute(model);
 			
@@ -80,6 +52,22 @@ public class DispatcherServlet extends HttpServlet {
 			RequestDispatcher requestDispatcher = request.getRequestDispatcher(
 					"/Error.jsp" );
 			requestDispatcher.forward( request, response );		
+		}
+	}
+	
+	private void prepareRequestData(HttpServletRequest request,
+			HashMap<String, Object> model, DataBinding pageController) 
+				throws Exception {
+		Object[] dataBinders = pageController.getDataBinders();
+		String dataName = null;
+		Class<?> dataType = null;
+		Object dataObject = null;
+		int size = dataBinders.length;
+		for(int i=0; i<size; i+=2) {
+			dataName = (String) dataBinders[i];
+			dataType = (Class<?>) dataBinders[i+1];
+			dataObject = ServletDataDataBinder.bind(request, dataName, dataType);
+			model.put(dataName, dataObject);
 		}
 	}
 	

@@ -2,10 +2,11 @@ package spms.controls;
 
 import java.util.Map;
 
+import spms.bind.DataBinding;
 import spms.dao.MemberDao;
 import spms.vo.Member;
 
-public class MemberAddController implements Controller {
+public class MemberAddController implements Controller, DataBinding {
 	MemberDao memberDao;
 	
 	public MemberAddController setMemberDao(MemberDao memberDao) {
@@ -15,10 +16,16 @@ public class MemberAddController implements Controller {
 	
 	@Override
 	public String execute(Map<String, Object> model) throws Exception {
-		if(model.containsKey("member")) {
-			memberDao.insert((Member) model.get("member"));
+		Member member = (Member) model.get("member");
+		if(member.getName() != null) {
+			memberDao.insert(member);
 			return "redirect:../member/list.do";
 		}
 		return "/member/MemberAdd.jsp";
+	}
+
+	@Override
+	public Object[] getDataBinders() {
+		return new Object[]{"member", spms.vo.Member.class};
 	}
 }

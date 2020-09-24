@@ -1,6 +1,7 @@
 package spms.listeners;
 
 import javax.naming.InitialContext;
+
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -14,7 +15,6 @@ import spms.controls.MemberLogOutController;
 import spms.controls.MemberRemoveController;
 import spms.controls.MemberSortController;
 import spms.controls.MemberUpdateController;
-import spms.dao.MemberDao;
 import spms.dao.MysqlMemberDao;
 
 @WebListener
