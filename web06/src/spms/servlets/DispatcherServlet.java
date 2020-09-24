@@ -35,13 +35,9 @@ public class DispatcherServlet extends HttpServlet {
 		try {
 			HashMap<String, Object> model = new HashMap<>();
 			ServletContext sc = this.getServletContext();
-			model.put("memberDao", sc.getAttribute("memberDao"));
 			model.put("session", request.getSession());
-			Controller pageController = null;
-			if("/member/list.do".equals(servletPath)) {
-				pageController = new MemberListController();
-			}else if("/member/add.do".equals(servletPath)) {
-				pageController = new MemberAddController();
+			Controller pageController = (Controller) sc.getAttribute(servletPath);
+			if("/member/add.do".equals(servletPath)) {
 				if(request.getParameter("name") != null) {
 					model.put("member", new Member().
 							setName(request.getParameter("name")).
@@ -49,7 +45,6 @@ public class DispatcherServlet extends HttpServlet {
 							setPassword(request.getParameter("password")));	
 				}
 			}else if("/member/update.do".equals(servletPath)) {
-				pageController = new MemberUpdateController();
 				if(request.getParameter("name") != null) {
 					model.put("member", new Member().
 							setName(request.getParameter("name"))
@@ -59,19 +54,13 @@ public class DispatcherServlet extends HttpServlet {
 					model.put("no", Integer.parseInt(request.getParameter("no")));
 				}
 			}else if("/member/remove.do".equals(servletPath)) {
-				pageController = new MemberRemoveController();
 				model.put("no", Integer.parseInt(request.getParameter("no")));
-			}else if("/member/sort.do".equals(servletPath)) {
-				pageController = new MemberSortController();
 			}else if("/auth/login.do".equals(servletPath)) {
-				pageController = new MemberLogInController();
 				if(request.getParameter("email") != null) {
 					model.put("member", new Member()
 							.setEmail(request.getParameter("email"))
 							.setPassword(request.getParameter("password")));
 				}
-			}else if("/auth/logout.do".equals(servletPath)) { // 
-				pageController = new MemberLogOutController();
 			}
 			String viewUrl = pageController.execute(model);
 			
