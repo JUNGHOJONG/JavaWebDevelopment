@@ -2,9 +2,11 @@ package spms.controls;
 
 import java.util.Map;
 
+import spms.annotation.Component;
 import spms.bind.DataBinding;
 import spms.dao.MemberDao;
 
+@Component("/member/remove.do")
 public class MemberRemoveController implements Controller, DataBinding {
 	MemberDao memberDao;
 	

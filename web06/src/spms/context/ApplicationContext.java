@@ -4,9 +4,14 @@ import java.io.FileReader;
 import java.lang.reflect.Method;
 import java.util.Hashtable;
 import java.util.Properties;
+import java.util.Set;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
+
+import org.reflections.Reflections;
+
+import spms.annotation.Component;
 
 public class ApplicationContext {
 	Hashtable<String, Object> hashTable = new Hashtable<String, Object>();
@@ -20,12 +25,12 @@ public class ApplicationContext {
 		props.load(new FileReader(propertiesPath));
 		
 		prepareObjects(props);
+		prepareAnnotationObjects();
 		injectDependency();
 	}
 	
 	private void prepareObjects(Properties props) throws Exception{
 		Context context = new InitialContext();
-		//hashTable mapping
 		for(Object object : props.keySet()) {
 			String key = (String) object;
 			if(key.startsWith("jndi")) {
@@ -35,9 +40,20 @@ public class ApplicationContext {
 			}
 		}
 	}
+
+	private void prepareAnnotationObjects() throws Exception{
+		Reflections reflector = new Reflections("");
+		Set<Class<?>> list = reflector.getTypesAnnotatedWith(Component.class);
+		for(Class<?> clazz : list) {
+			String key = clazz.getAnnotation(Component.class).value();
+			System.out.println(key);
+			Object value = clazz.newInstance();
+			System.out.println(value);
+			hashTable.put(key, value);
+		}
+	}
 	
 	private void injectDependency() throws Exception{
-		// 
 		for(Object object : hashTable.keySet()) {
 			String key = (String) object;
 			if(!key.startsWith("jndi")) {

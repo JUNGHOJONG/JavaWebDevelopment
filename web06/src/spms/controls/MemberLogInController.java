@@ -3,10 +3,12 @@ package spms.controls;
 import java.util.Map;
 import javax.servlet.http.HttpSession;
 
+import spms.annotation.Component;
 import spms.bind.DataBinding;
 import spms.dao.MemberDao;
 import spms.vo.Member;
 
+@Component("/auth/login.do")
 public class MemberLogInController implements Controller, DataBinding {
 	MemberDao memberDao;
 	
@@ -19,6 +21,7 @@ public class MemberLogInController implements Controller, DataBinding {
 	public String execute(Map<String, Object> model) throws Exception {
 		Member member = (Member) model.get("member");
 		if(member.getEmail() != null) {
+			System.out.println("memberDao:" + memberDao);
 			if(memberDao.exist(member.getEmail(), member.getPassword()) != null) {
 				HttpSession session = (HttpSession) model.get("session");
 				session.setAttribute("member", member);

@@ -1,8 +1,11 @@
 package spms.controls;
 
 import java.util.Map;
+
+import spms.annotation.Component;
 import spms.dao.MemberDao;
 
+@Component("/member/list.do")
 public class MemberListController implements Controller {
 	MemberDao memberDao;
 	

@@ -2,8 +2,10 @@ package spms.controls;
 
 import java.util.Map;
 
+import spms.annotation.Component;
 import spms.dao.MemberDao;
 
+@Component("/member/sort.do")
 public class MemberSortController implements Controller {
 	MemberDao memberDao;
 	
