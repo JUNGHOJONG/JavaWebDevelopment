@@ -2,6 +2,7 @@ package spms.servlets;
 
 import java.io.IOException;
 
+
 import java.util.HashMap;
 
 import javax.servlet.RequestDispatcher;
@@ -12,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import spms.bind.DataBinding;
-import spms.bind.ServletDataDataBinder;
+import spms.bind.ServletRequestDataBinder;
 import spms.context.ApplicationContext;
 import spms.controls.Controller;
 import spms.listeners.ContextLoaderListener;
@@ -69,7 +70,7 @@ public class DispatcherServlet extends HttpServlet {
 		for(int i=0; i<size; i+=2) {
 			dataName = (String) dataBinders[i];
 			dataType = (Class<?>) dataBinders[i+1];
-			dataObject = ServletDataDataBinder.bind(request, dataName, dataType);
+			dataObject = ServletRequestDataBinder.bind(request, dataName, dataType);
 			model.put(dataName, dataObject);
 		}
 	}

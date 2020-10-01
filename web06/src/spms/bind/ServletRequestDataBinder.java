@@ -6,7 +6,7 @@ import java.util.Set;
 
 import javax.servlet.ServletRequest;
 
-public class ServletDataDataBinder {
+public class ServletRequestDataBinder {
 	
 	public static Object bind(ServletRequest request, String dataName,
 			Class<?> dataType) throws Exception{

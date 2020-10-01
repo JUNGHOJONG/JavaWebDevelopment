@@ -1,6 +1,8 @@
 package spms.dao;
 
 import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -44,5 +46,28 @@ public class MysqlProjectDao implements ProjectDao {
 			try{ if(connection != null) connection.close(); } catch(Exception e) {}
 		}
 	}
+
+	public int insert(Project project) throws Exception {
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		try {
+			connection = ds.getConnection();
+			preparedStatement = connection.prepareStatement(
+					"INSERT INTO PROJECTS(PNAME, CONTENT, START_DATE, END_DATE,"
+					+ " STATE, CREATION_DATE, TAGS)"
+					+ " VALUES(?, ?, ?, ?, 0, NOW(), ?);");
+			preparedStatement.setString(1, project.getTitle());
+			preparedStatement.setString(2, project.getContent());
+			preparedStatement.setDate(3, (Date) project.getStartDate());
+			preparedStatement.setDate(4, (Date) project.getEndDate());
+			preparedStatement.setString(5, project.getTag());
+			return preparedStatement.executeUpdate();	
+		}catch(Exception e) {
+			throw e;
+		}finally {
+			try { if(preparedStatement != null) preparedStatement.close(); } catch(Exception e) {}
+			try { if(connection != null) connection.close(); } catch(Exception e) {}
+		}
+	}	
 
 }
