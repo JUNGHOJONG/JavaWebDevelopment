@@ -46,9 +46,7 @@ public class ApplicationContext {
 		Set<Class<?>> list = reflector.getTypesAnnotatedWith(Component.class);
 		for(Class<?> clazz : list) {
 			String key = clazz.getAnnotation(Component.class).value();
-			System.out.println(key);
 			Object value = clazz.newInstance();
-			System.out.println(value);
 			hashTable.put(key, value);
 		}
 	}
