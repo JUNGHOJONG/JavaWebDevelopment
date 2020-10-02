@@ -81,7 +81,7 @@ public class Project {
 		return this;
 	}
 	
-	public String getTag() {
+	public String getTags() {
 		return this.tags;
 	}
 

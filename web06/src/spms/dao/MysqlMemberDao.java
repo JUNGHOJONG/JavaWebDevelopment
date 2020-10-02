@@ -2,6 +2,7 @@ package spms.dao;
 
 import java.sql.Connection;
 
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -19,7 +20,6 @@ public class MysqlMemberDao implements MemberDao{
 		this.ds = ds;
 	}
 	
-	// 객체를 반환하는 함수, 데이터를 처리하는 함수
 	public List<Member> selectList() throws Exception{
 		Connection connection = null;
 		Statement statement = null;
@@ -47,7 +47,6 @@ public class MysqlMemberDao implements MemberDao{
 		}
 	}
 	
-	// 회원 등록 
 	public int insert( Member member ) throws Exception {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
@@ -69,7 +68,6 @@ public class MysqlMemberDao implements MemberDao{
 		}
 	}
 	
-	// 회원 삭제
 	public int delete( int no ) throws Exception{
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
@@ -98,12 +96,13 @@ public class MysqlMemberDao implements MemberDao{
 			resultSet = statement.executeQuery(
 					"SELECT MNO, EMAIL, MNAME, CRE_DATE FROM MEMBERS"
 					+ " WHERE MNO = " + no );
-			resultSet.next();
-			Member member = new Member();
-			member.setEmail( resultSet.getString( "EMAIL" ) )
-			.setName( resultSet.getString( "MNAME" ) )
-			.setCreatedDate( resultSet.getDate( "CRE_DATE" ) );
-			return member;
+			if(resultSet.next()) {
+				return new Member().setNo(resultSet.getInt("MNO"))
+				.setEmail( resultSet.getString( "EMAIL" ) )
+				.setName( resultSet.getString( "MNAME" ) )
+				.setCreatedDate( resultSet.getDate( "CRE_DATE" ) );
+			}
+			throw new Exception("해당 번호의 프로젝트를 찾을 수 없습니다.");
 		} catch ( Exception e ) {
 			throw e;
 		} finally {
@@ -113,7 +112,6 @@ public class MysqlMemberDao implements MemberDao{
 		}
 	}
 	
-	// 회원 정보 변경
 	public int update( Member member ) throws Exception {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
@@ -135,7 +133,6 @@ public class MysqlMemberDao implements MemberDao{
 		}
 	}
 	
-	// Member 객체 있응면 리턴 없으면 null리턴
 	public Member exist( String email, String password ) throws Exception{
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
@@ -143,14 +140,13 @@ public class MysqlMemberDao implements MemberDao{
 		try {
 			connection = ds.getConnection();
 			preparedStatement = connection.prepareStatement( 
-					"SELECT EMAIL, PWD FROM MEMBERS WHERE EMAIL=? AND PWD=?" );
+					"SELECT MNAME, EMAIL FROM MEMBERS WHERE EMAIL=? AND PWD=?" );
 			preparedStatement.setString( 1, email );
 			preparedStatement.setString( 2, password );
 			resultSet = preparedStatement.executeQuery();
-			if( resultSet.next() ) {
-				Member member = new Member();
-				member.setEmail( email ).setPassword( password );
-				return member;
+			if(resultSet.next()) {
+				return new Member().setName(resultSet.getString("MNAME"))
+						.setEmail(resultSet.getString("EMAIL"));
 			}else {
 				System.out.println( "해당 되는 정보가 없습니다." );
 				return null;	

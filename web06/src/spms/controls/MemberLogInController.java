@@ -21,8 +21,8 @@ public class MemberLogInController implements Controller, DataBinding {
 	public String execute(Map<String, Object> model) throws Exception {
 		Member member = (Member) model.get("member");
 		if(member.getEmail() != null) {
-			System.out.println("memberDao:" + memberDao);
-			if(memberDao.exist(member.getEmail(), member.getPassword()) != null) {
+			member = memberDao.exist(member.getEmail(), member.getPassword());
+			if(member != null) {
 				HttpSession session = (HttpSession) model.get("session");
 				session.setAttribute("member", member);
 				return "redirect:../member/list.do";

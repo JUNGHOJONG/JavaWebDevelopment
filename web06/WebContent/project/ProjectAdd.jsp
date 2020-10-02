@@ -2,52 +2,52 @@
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
-<head>
-<meta http-equiv="Content-type" content="text/html"; charset="UTF-8">
-<jsp:include page="/Header.jsp"/>
-<title>프로젝트 등록</title>
-<style>
-ul {padding: 0;}
-li {list-style:none;}
-label {
-float: left;
-text-align: right;
-width: 60px;
-}
-</style>
-</head>
-<body>
-<h1>프로젝트 등록</h1>
-<form action="add.do" method="post">
-	<ul>
-	<li>
-		<label for="title">제목</label>
-		<input id="title" type="text" name="title" size="40">
-	</li>
-	<li>
-		<label for="content">내용</label>
-		<textarea id="content" name="content" rows="5" cols="40"></textarea>
-	</li>						
-	<li>
-		<label for="startDate">시작일</label>
-		<input id="startDate" 
-		type="text" name="startDate" placeholder="예)2020-01-01">								
-	</li>						
-	<li>
-		<label for="endDate">종료일</label>
-		<input id="endDate" 
-		type="text" name="endDate" placeholder="예)2020-12-30">												
-	</li>					
-	<li>
-		<label for="tags">태그</label>
-		<input id="tags" 
-		type="text" name="tags" placeholder="예) 태그1, 태그2, 태그3">												
-	</li>
-	</ul>				
-	<button type="submit">추가</button>
-	<button type="reset">리셋</button>
-	<button type="button" onclick='location.href="list.do"'>뒤로가기</button>
-</form>
-<jsp:include page="/Tail.jsp"/>
-</body>
+	<head>
+		<meta http-equiv="Content-type" content="text/html"; charset="UTF-8">
+		<jsp:include page="/Header.jsp"/>
+		<title>프로젝트 등록</title>
+		<style>
+			ul {padding: 0;}
+			li {list-style:none;}
+			label {
+				float: left;
+				text-align: right;
+				width: 60px;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>프로젝트 등록</h1>
+		<form action="add.do" method="post">
+			<ul>
+			<li>
+				<label for="title">제목</label>
+				<input id="title" type="text" name="title" size="40">
+			</li>
+			<li>
+				<label for="content">내용</label>
+				<textarea id="content" name="content" rows="5" cols="40"></textarea>
+			</li>						
+			<li>
+				<label for="startDate">시작일</label>
+				<input id="startDate" 
+				type="text" name="startDate" placeholder="예)2020-01-01">								
+			</li>						
+			<li>
+				<label for="endDate">종료일</label>
+				<input id="endDate" 
+				type="text" name="endDate" placeholder="예)2020-12-30">												
+			</li>					
+			<li>
+				<label for="tags">태그</label>
+				<input id="tags" 
+				type="text" name="tags" placeholder="예) 태그1, 태그2, 태그3">												
+			</li>
+			</ul>				
+			<button type="submit">추가</button>
+			<button type="reset">리셋</button>
+			<button type="button" onclick='location.href="list.do"'>뒤로가기</button>
+		</form>
+		<jsp:include page="/Tail.jsp"/>
+	</body>
 </html>
