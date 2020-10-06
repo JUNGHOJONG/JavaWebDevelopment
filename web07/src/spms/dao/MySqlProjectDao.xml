@@ -6,10 +6,10 @@
 		<result column="PNO" property="no"/>
 		<result column="PNAME" property="title"/>
 		<result column="CONTENT" property="content"/>
-		<result column="START_DATE" property="startDate"/>
-		<result column="END_DATE" property="endDate"/>
+		<result column="START_DATE" property="startDate" javaType="java.sql.Date"/>
+		<result column="END_DATE" property="endDate" javaType="java.sql.Date"/>
 		<result column="STATE" property="state"/>
-		<result column="CREATION_DATE" property="creationDate"/>
+		<result column="CREATION_DATE" property="creationDate" javaType="java.sql.Date"/>
 		<result column="TAGS" property="tags"/>
 	</resultMap>
 	<select id="selectList" resultMap="projectResultMap">
@@ -36,7 +36,7 @@
 				END_DATE = #{endDate},
 				STATE = #{state},
 				TAGS = #{tags}
-			where PNO = #{value}
+			where PNO = #{no}
 	</update>
 	<delete id="delete" parameterType="int">
 		delete from PROJECTS
