@@ -30,7 +30,7 @@
 				</li>
 				<li>
 					<label for="content">내용</label>
-					<textarea id="content" name="content" value="${project.content}" rows="5" cols="40"></textarea>
+					<textarea id="content" name="content" rows="5" cols="40">${project.content}</textarea>
 				</li>
 				<li>
 					<label for="startDate">시작일</label>
