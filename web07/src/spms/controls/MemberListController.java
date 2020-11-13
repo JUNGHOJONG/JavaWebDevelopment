@@ -1,5 +1,6 @@
 package spms.controls;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import spms.annotation.Component;
@@ -16,7 +17,17 @@ public class MemberListController implements Controller {
 	
 	@Override
 	public String execute(Map<String, Object> model) throws Exception{
-		model.put("members", memberDao.selectList());
+		HashMap<String,Object> paramMap = new HashMap<String,Object>();
+	  	paramMap.put("orderCond", model.get("orderCond"));
+	  	
+	    model.put("members", memberDao.selectList(paramMap));
 		return "/member/MemberList.jsp";
 	}
+	
+	public Object[] getDataBinders() {
+		    return new Object[]{
+		        "orderCond", String.class
+		    };
+	}
+		  
 }

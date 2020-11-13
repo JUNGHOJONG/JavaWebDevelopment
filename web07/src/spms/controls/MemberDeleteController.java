@@ -6,11 +6,11 @@ import spms.annotation.Component;
 import spms.bind.DataBinding;
 import spms.dao.MemberDao;
 
-@Component("/member/remove.do")
-public class MemberRemoveController implements Controller, DataBinding {
+@Component("/member/delete.do")
+public class MemberDeleteController implements Controller, DataBinding {
 	MemberDao memberDao;
 	
-	public MemberRemoveController setMemberDao(MemberDao memberDao) {
+	public MemberDeleteController setMemberDao(MemberDao memberDao) {
 		this.memberDao = memberDao;
 		return this;
 	}
