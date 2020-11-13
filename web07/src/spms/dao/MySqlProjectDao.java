@@ -10,7 +10,7 @@ import spms.annotation.Component;
 import spms.vo.Project;
 
 @Component("projectDao")
-public class MysqlProjectDao implements ProjectDao {
+public class MySqlProjectDao implements ProjectDao {
 	SqlSessionFactory sqlSessionFactory;
 	public void setDateSource(SqlSessionFactory sqlSessionFactory) {
 		this.sqlSessionFactory = sqlSessionFactory;
