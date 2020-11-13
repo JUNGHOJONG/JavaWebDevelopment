@@ -13,7 +13,7 @@ import javax.sql.DataSource;
 
 import spms.vo.Member;
 
-public class MysqlMemberDao implements MemberDao{
+public class MySqlMemberDao implements MemberDao{
 	
 	DataSource ds;
 	public void setDataSource(DataSource ds) {
