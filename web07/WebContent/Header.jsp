@@ -4,8 +4,8 @@
 <div style="background-color:#00008b; color:#ffffff; height:20px; padding:5px;">
 	Davinci.J's web project
 	<span style="float:right;">
-		<a style="color:white;" href="/web06/project/list.do">프로젝트</a>
-		<a style="color:white;" href="/web06/member/list.do">회원</a>
+		<a style="color:white;" href="/web07/project/list.do">프로젝트</a>
+		<a style="color:white;" href="/web07/member/list.do">회원</a>
 		<c:if test="${empty sessionScope.member or empty sessionScope.member.email}">
 			<a style="color:white;" href="<%=request.getContextPath()%>/auth/login.do">로그인</a>
 		</c:if>
