@@ -12,7 +12,7 @@ import spms.vo.Project;
 @Component("projectDao")
 public class MySqlProjectDao implements ProjectDao {
 	SqlSessionFactory sqlSessionFactory;
-	public void setDateSource(SqlSessionFactory sqlSessionFactory) {
+	public void setSqlSessionFactory(SqlSessionFactory sqlSessionFactory) {
 		this.sqlSessionFactory = sqlSessionFactory;
 	}
 
